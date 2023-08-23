@@ -1,0 +1,13 @@
+{
+    "require": {
+        "symfony/dotenv": "^6.0",
+        "symfony/mailer": "^6.0"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "BuyMeACoffee\\": "src"
+        },
+        "files": ["src/helpers.php"]
+    }
+}
