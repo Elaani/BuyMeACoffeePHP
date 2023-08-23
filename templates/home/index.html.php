@@ -1,6 +1,7 @@
 </body>
-    <header>
+<header>
 </header>
-    <footer> 
+<footer>
 </footer>
+
 </html>

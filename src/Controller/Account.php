@@ -9,11 +9,14 @@ use BuyMeACoffee\Kernel\Input;
 use BuyMeACoffee\Service\User as UserService;
 
 
-class Account {
-    public function __construct(private UserService $userService = new UserService()) {
+class Account
+{
+    public function __construct(private UserService $userService = new UserService())
+    {
     }
 
-    public function signup(): void {
+    public function signup(): void
+    {
         $viewVariables = [];
 
         if (Input::post('signup_submit')) {
@@ -25,7 +28,7 @@ class Account {
 
             if (isset($fullName, $email, $password)) {
                 if (
-                    $this->userService->isEmailValid($email) && 
+                    $this->userService->isEmailValid($email) &&
                     $this->userService->isPasswordValid($password)
                 ) {
                     if ($this->userService->doesAccountExist($email)) {
@@ -54,10 +57,12 @@ class Account {
         View::render('account/signup', 'Sign Up', $viewVariables);
     }
 
-    public function signin(): void {
+    public function signin(): void
+    {
         View::render('account/signin', 'Sign In');
     }
-    public function edit(): void {
+    public function edit(): void
+    {
         View::render('account/edit', 'Edit Account');
     }
 
