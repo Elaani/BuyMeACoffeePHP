@@ -1,5 +1,5 @@
 <div class="center">
-    <form method="post" action="<?= site_url('/?uri=signup') ?>">
+    <form method="POST" action="<?= site_url('/signup') ?>">
         <p>
             <label for="name">Name:</label>
             <input type="text" name="fullname" id="name" required="required">

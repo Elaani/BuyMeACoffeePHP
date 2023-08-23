@@ -8,18 +8,19 @@ use PDOStatement;
 
 class Database
 {
-    private static ?PDO $db;
+    private static ?PDO $pdo;
     private static ?PDOStatement $statement;
 
-    public static function connect(array $dbDetatils): void
+    public static function connect(array $dbDetails): void
     {
         try {
             static::$pdo = new PDO(
-                "mysql:host={$_ENV['DB_HOST']};dbname=){$_ENV['DB_NAME']}",
-                $_ENV['DB_USER'],
-                $_ENV['DB_PASSWORD']
+                "mysql:host={$dbDetails['db_host']};dbname={$dbDetails['db_name']}",
+                $dbDetails['db_user'],
+                $dbDetails['db_password']
             );
         } catch (PDOException $except) {
+            echo $except->getMessage();
             exit('An unexpected database error has occurred.');
         }
     }
@@ -57,6 +58,6 @@ class Database
 
     public static function quote(string $string): string
     {
-        return static::$db->quote($string);
+        return static::$pdo->quote($string);
     }
 }

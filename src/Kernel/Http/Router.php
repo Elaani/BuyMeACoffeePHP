@@ -78,6 +78,11 @@ class Router
         }
     }
 
+    private static function isRedirection(string $method): bool
+    {
+        return ! str_contains($method, self::CONTROLLER_SEPARATOR);
+    }
+
     private static function isHttpMethodValid(): bool
     {
         if (self::$httpMethod === self::METHOD_GET_AND_POST) {
@@ -92,10 +97,5 @@ class Router
             $params[$key] = str_replace('/', '', $params);
         }
         return $params;
-    }
-
-    private static function isRedirection(string $method): bool
-    {
-        return ! str_contains($method, self::CONTROLLER_SEPARATOR);
     }
 }

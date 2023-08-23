@@ -44,7 +44,7 @@ class Account
 
                     if ($this->userService->create($user)) {
                         // Register the user
-                        redirect('/?uri=home');
+                        redirect('/home');
                     } else {
                         $viewVariables[View::ERROR_MESSAGE_KEY] = 'An error has occurred while creating your account. Please try again.';
                     }

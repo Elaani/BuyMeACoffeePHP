@@ -1,5 +1,5 @@
 <div class="center">
-    <form method="post" action="<?= site_url('/signin') ?>">
+    <form method="POST" action="<?= site_url('/signin') ?>">
         <p>
             <label for="email">Email:</label>
             <input type="email" name="email" id="email" required="required">
