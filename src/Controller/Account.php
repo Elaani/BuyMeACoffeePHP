@@ -28,15 +28,28 @@ class Account {
                     $this->userService->isEmailValid($email) && 
                     $this->userService->isPasswordValid($password)
                 ) {
-                    // Register the user
-                    redirect('/?uri=home');
+                    if ($this->userService->doesAccountExist($email)) {
+                        $viewVariables[View::ERROR_MESSAGE_KEY] = 'An account with the same email already exists.';
+                    }
+                    $user = [
+                        'fullname' => $fullName,
+                        'email' => $email,
+                        'password' => $password
+                    ];
+
+                    if ($this->userService->create($user)) {
+                        // Register the user
+                        redirect('/?uri=home');
+                    } else {
+                        $viewVariables[View::ERROR_MESSAGE_KEY] = 'An error has occurred while creating your account. Please try again.';
+                    }
                 } else {
                     $viewVariables[View::ERROR_MESSAGE_KEY] = 'Email/Password is not valid.';
                 }
             } else {
                 $viewVariables[View::ERROR_MESSAGE_KEY] = 'All fields are required.';
             }
-        };
+        }
 
         View::render('account/signup', 'Sign Up', $viewVariables);
     }
