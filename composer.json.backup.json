@@ -1,13 +1,6 @@
 {
-    "name": "willo/buy-me-a-coffee-php",
-    "authors": [
-        {
-            "name": "Sarah Duncan",
-            "email": "forget95@gmail.com"
-        }
-    ],
   "require": {
-    "php": ">=8.0",
+    "php": ">=8.1",
     "symfony/dotenv": "^6.0",
     "symfony/mailer": "^6.0"
   },

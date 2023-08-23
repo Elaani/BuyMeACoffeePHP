@@ -8,11 +8,13 @@ use BuyMeACoffee\Kernel\PhpTemplate\View;
 use BuyMeACoffee\Kernel\Input;
 use BuyMeACoffee\Service\User as UserService;
 
-
 class Account
 {
-    public function __construct(private UserService $userService = new UserService())
+    private UserService $userService;
+
+    public function __construct()
     {
+        $this->userService = new UserService();
     }
 
     public function signup(): void
