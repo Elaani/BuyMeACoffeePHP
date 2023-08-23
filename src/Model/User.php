@@ -11,11 +11,17 @@ class User
    private const MINIMUM_PASSWORD = 5;
    private const TABLE_NAME = 'users';
 
-   public function insert(array $userDetails): bool
+   public function insert(array $userDetails): string|bool
    {
       $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (fullname, email, password) VALUES(:fullname, :email, :password)';
 
-      return Database::query($sql, $userDetails);
+      if (Database::query($sql, $userDetails)) {
+         return Database::lastInsertId();
+      }
+      ;
+
+      return false;
+
    }
 
    public function doesAccountExist(string $email): bool

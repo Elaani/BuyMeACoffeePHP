@@ -42,8 +42,10 @@ class Account
                         'password' => $password
                     ];
 
-                    if ($this->userService->create($user)) {
-                        // Register the user
+                    // Register the user
+                    if ($userId = $this->userService->create($user)) {
+                        $this->userService->setAuthentication($userId, $email);
+
                         redirect('/home');
                     } else {
                         $viewVariables[View::ERROR_MESSAGE_KEY] = 'An error has occurred while creating your account. Please try again.';

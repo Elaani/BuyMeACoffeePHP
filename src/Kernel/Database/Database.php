@@ -56,6 +56,11 @@ class Database
         return static::$statement->fetchAll() ?? null;
     }
 
+    public static function lastInsertId(): string|bool
+    {
+        return static::$pdo->lastInsertId();
+    }
+
     public static function quote(string $string): string
     {
         return static::$pdo->quote($string);
