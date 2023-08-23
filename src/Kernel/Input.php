@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Kernel;
 
-class Input {
-    public static function get() {
-
+final class Input {
+    public static function get(string $key) {
+        return $_GET[$key] ?? false;
     }
 
-    public static function post() {
-        
+    public static function post(string $key) {
+        return $_POST[$key] ?? false;
     }
 }

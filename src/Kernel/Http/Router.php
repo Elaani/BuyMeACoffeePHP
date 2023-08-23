@@ -15,8 +15,9 @@ class Router {
 
     public const METHOD_GET = 'GET';
     public const METHOD_POST = 'POST';
+    private const METHOD_GET_AND_POST = 'GET_POST';
 
-    private static ?string $httpMethod = null;
+    private static ?string $httpMethod;
 
     public static function get(string $uri, string $classMethod = ''){
         self::$httpMethod = self::METHOD_GET;
@@ -26,6 +27,12 @@ class Router {
 
     public static function post(string $uri, string $classMethod = ''): void {
         self::$httpMethod = self::METHOD_POST;
+
+        self::execute($uri, $classMethod);
+    }
+
+    public static function getAndPost(string $uri, string $classMethod = ''): void {
+        self::$httpMethod = self::METHOD_GET_AND_POST;
 
         self::execute($uri, $classMethod);
     }
@@ -67,14 +74,17 @@ class Router {
     }
 
     private static function isHttpMethodValid(): bool {
-        return self::$httpMethod !== null && $_SERVER['REQUEST_METHOD'] === self::$httpMethod;
+        if (self::$httpMethod === self::METHOD_GET_AND_POST) {
+            return $_SERVER['REQUEST_METHOD'] === self::METHOD_GET || $_SERVER['REQUEST_METHOD'] === self::METHOD_POST; 
+        }
+        return $_SERVER['REQUEST_METHOD'] === self::$httpMethod;
     }
 
     private static function getActionParameters(array $params): array {
         forEach($params as $key => $value) {
             $params[$key] = str_replace('/', '', $params);
-            return $params;
         }
+        return $params;
     }
 
     private static function isRedirection(string $method): bool {

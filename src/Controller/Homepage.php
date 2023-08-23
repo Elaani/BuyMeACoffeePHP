@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Controller;
 
 use BuyMeACoffee\Kernel\PhpTemplate\View;
