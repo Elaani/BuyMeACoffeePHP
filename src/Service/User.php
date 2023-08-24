@@ -2,7 +2,6 @@
 
 namespace BuyMeACoffee\Service;
 
-use BuyMeACoffee\Kernel\Session;
 use BuyMeACoffee\Model\User as UserModel;
 
 class User
@@ -10,13 +9,14 @@ class User
     private const MINIMUM_PASSWORD = 5;
     private const MAXIMUM_EMAIL_LENGTH = 100;
 
+    private const PASSWORD_COST_FACTOR = 12;
+    private const PASSWORD_ALGORITHM = PASSWORD_BCRYPT;
+
     private UserModel $userModel;
-    private Session $session;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
-        $this->session = new Session();
     }
 
     public function create(array $userDetails): string|bool
@@ -41,14 +41,13 @@ class User
         return strlen($password) > self::MINIMUM_PASSWORD;
     }
 
-    public function setAuthentication(string $userId, string $email)
+    public function hashPassword(string $password): string
     {
-        $this->session->set('email', $email);
-        $this->session->userId('userId', $userId);
+        return (string) password_hash($password, self::PASSWORD_ALGORITHM, ['cost' => self::PASSWORD_COST_FACTOR]);
     }
 
-    public function logout()
+    public function verifyPassword(string $clearedPassword, string $hashedPassword): bool
     {
-        $this->session->destroy();
+        return password_verify($clearedPassword, $hashedPassword);
     }
 }

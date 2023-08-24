@@ -16,9 +16,22 @@ class Session
         $_SESSION[$key] = $value;
     }
 
+    public function sets(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            $this->set($key, $value);
+        }
+    }
+
+    // Allows the creation of multiple sessions
     public function get(string $key)
     {
         return $_SESSION[$key] ?? false;
+    }
+
+    public function doesExist(string $key): bool
+    {
+        return ! empty($_SESSION[$key]);
     }
 
     public function destroy(): void

@@ -48,9 +48,11 @@ class Router
 
         if (preg_match("#^$uri$#", $url, $params)) {
             if (self::isRedirection($method)) {
+                echo "Redirect";
                 header(
                     sprintf('Location: %s/%s', $_ENV['SITE_URL'], $method)
                 );
+
             } elseif (self::isHttpMethodValid()) {
                 $split = explode(self::CONTROLLER_SEPARATOR, $method);
                 $className = self::CONTROLLER_NAMESPACE . $split[0];
@@ -58,9 +60,11 @@ class Router
 
                 try {
                     $reflection = new ReflectionClass($className);
+
                     // Check if the class has methods
                     if (class_exists($className) && $reflection->hasMethod($method)) {
                         $action = new ReflectionMethod($className, $method);
+
                         // Make sure the requested action has "public" visibility
                         if ($action->isPublic()) {
                             // Now, we perform the controller's action
@@ -71,9 +75,10 @@ class Router
                     echo $err->getMessage();
                 }
             } else {
-                throw new InvalidArgumentException(sprintf('Invalid "%s" HTTP Request', $_SERVER['REQUEST_METHOD']));
+                throw new InvalidArgumentException(
+                    sprintf('Invalid "%s" HTTP Request', $_SERVER['REQUEST_METHOD'])
+                );
             }
-
 
         }
     }
@@ -88,6 +93,7 @@ class Router
         if (self::$httpMethod === self::METHOD_GET_AND_POST) {
             return $_SERVER['REQUEST_METHOD'] === self::METHOD_GET || $_SERVER['REQUEST_METHOD'] === self::METHOD_POST;
         }
+
         return $_SERVER['REQUEST_METHOD'] === self::$httpMethod;
     }
 

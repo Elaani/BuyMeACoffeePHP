@@ -30,7 +30,8 @@ class User
 
       Database::query($sql, ['email' => $email]);
 
-      return Database::rowCount() > 1;
+      // Check if the query returned an email address
+      return Database::rowCount() >= 1;
    }
 
    public function login(string $email, string $password): bool

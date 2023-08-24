@@ -1,7 +1,8 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
 
 use BuyMeACoffee\Kernel\Bootstrap;
+
+require __DIR__ . '/vendor/autoload.php';
 
 ob_start();
 $app = new Bootstrap();

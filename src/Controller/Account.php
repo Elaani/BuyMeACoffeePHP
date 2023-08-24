@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace BuyMeACoffee\Controller;
 
-use BuyMeACoffee\Kernel\PhpTemplate\View;
 use BuyMeACoffee\Kernel\Input;
+use BuyMeACoffee\Kernel\PhpTemplate\View;
+use BuyMeACoffee\Kernel\Session;
 use BuyMeACoffee\Service\User as UserService;
+use BuyMeACoffee\Service\UserSession as UserSessionService;
+
+use BuyMeACoffee\Service\UserSession;
 
 class Account
 {
     private UserService $userService;
+    private UserSessionService $userSessionService;
 
     public function __construct()
     {
         $this->userService = new UserService();
+        $this->userSessionService = new UserSessionService(new Session());
     }
 
-    public function signup(): void
+    public function signUp(): void
     {
         $viewVariables = [];
 
@@ -35,20 +41,25 @@ class Account
                 ) {
                     if ($this->userService->doesAccountExist($email)) {
                         $viewVariables[View::ERROR_MESSAGE_KEY] = 'An account with the same email already exists.';
-                    }
-                    $user = [
-                        'fullname' => $fullName,
-                        'email' => $email,
-                        'password' => $password
-                    ];
-
-                    // Register the user
-                    if ($userId = $this->userService->create($user)) {
-                        $this->userService->setAuthentication($userId, $email);
-
-                        redirect('/home');
                     } else {
-                        $viewVariables[View::ERROR_MESSAGE_KEY] = 'An error has occurred while creating your account. Please try again.';
+                        $user = [
+                            'fullname' => $fullName,
+                            'email' => $email,
+                            'password' => $this->userService->hashPassword($password)
+                        ];
+
+                        // Register the user
+                        if ($userId = $this->userService->create($user)) {
+                            $this->userSessionService->setAuthentication([
+                                UserSession::USER_ID_SESSION_NAME => $userId,
+                                'email' => $email,
+                                'fullName' => $fullName
+                            ]);
+
+                            redirect();
+                        } else {
+                            $viewVariables[View::ERROR_MESSAGE_KEY] = 'An error has occurred while creating your account. Please try again.';
+                        }
                     }
                 } else {
                     $viewVariables[View::ERROR_MESSAGE_KEY] = 'Email/Password is not valid.';
@@ -61,7 +72,7 @@ class Account
         View::render('account/signup', 'Sign Up', $viewVariables);
     }
 
-    public function signin(): void
+    public function signIn(): void
     {
         View::render('account/signin', 'Sign In');
     }
@@ -70,4 +81,11 @@ class Account
         View::render('account/edit', 'Edit Account');
     }
 
+    public function logOut(): void
+    {
+        $this->userSessionService->logout();
+
+        // Redirect the user to the index page
+        redirect();
+    }
 }

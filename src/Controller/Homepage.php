@@ -4,17 +4,34 @@ declare(strict_types=1);
 
 namespace BuyMeACoffee\Controller;
 
+use BuyMeACoffee\Kernel\Session;
 use BuyMeACoffee\Kernel\PhpTemplate\View;
+use BuyMeACoffee\Service\UserSession as UserSessionService;
 
 class Homepage
 {
-    public function index(): void
+    private UserSessionService $userSessionService;
+
+    public function __construct()
     {
-        View::render('home/index', 'Homepage', ['name' => 'Sarah']);
+        $session = new Session();
+        $this->userSessionService = new UserSessionService($session);
     }
 
-    public function edit(): void
+    public function index(): void
     {
-        echo 'Edit hi';
+        $viewVariables = [];
+
+        if ($this->userSessionService->isLoggedIn()) {
+            $viewVariables['name'] = $this->userSessionService->getName();
+        }
+
+        View::render('home/index', 'Homepage', $viewVariables);
+    }
+
+    public function about(): void
+    {
+        $viewVariables = ['siteName' => $_ENV['SITE_NAME'], 'contactEmail' => $_ENV['ADMIN_EMAIL']];
+        View::render('home/about', 'Homepage', $viewVariables);
     }
 }

@@ -1,7 +1,12 @@
-</body>
-<header>
-</header>
-<footer>
-</footer>
+<?php if (! empty($name)) : ?>
 
-</html>
+    <p> Hello <strong>
+            <?= $name ?>!
+        </strong>
+    </p>
+
+<?php else : ?>
+
+    <p>Welcome All!</p>
+
+<?php endif ?>
