@@ -10,8 +10,8 @@ final class Bootstrap
     public function __construct()
     {
         // First, load the environment variables
-        $dotenv = new Dotenv();
-        $this->loadEnvironmentVariables($dotenv);
+        $dotent = new Dotenv();
+        $this->loadEnvironmentVariables($dotent);
 
         // Then, initialize the database connection (we need the ENV vars to be loaded before)
         $this->initializeDatabase();
@@ -22,7 +22,7 @@ final class Bootstrap
         require dirname(__DIR__, 1) . '/routes.php';
     }
 
-    private function initializeDatabase()
+    private function initializeDatabase(): void
     {
         $dbDetails = [
             'db_host' => $_ENV['DB_HOST'],

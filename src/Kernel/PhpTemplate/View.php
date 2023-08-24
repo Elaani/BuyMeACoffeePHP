@@ -9,6 +9,7 @@ final class View
     private const MESSAGES = [
         "FILENAME_NOT_FOUND" => '"%s" does not exist.'
     ];
+    //-------------------v
     private const PATH = __DIR__ . '/../../../templates/';
     private const FILE_EXTENSION = '.html.php';
 

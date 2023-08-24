@@ -1,8 +1,8 @@
 <div class="center">
-    <form method="POST" action="<?= site_url('/signup') ?>">
+    <form method="post" action="<?= site_url('/signup') ?>">
         <p>
             <label for="name">Name:</label>
-            <input type="text" name="fullname" id="name" required="required">
+            <input type="text" name="name" id="name" required="required">
         </p>
 
         <p>

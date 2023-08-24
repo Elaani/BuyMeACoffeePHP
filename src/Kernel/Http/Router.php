@@ -24,6 +24,7 @@ class Router
     {
         self::$httpMethod = self::METHOD_GET;
 
+        echo $_SERVER['REQUEST_METHOD'] . ' 2| ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
@@ -31,6 +32,7 @@ class Router
     {
         self::$httpMethod = self::METHOD_POST;
 
+        echo $_SERVER['REQUEST_METHOD'] . ' |2 ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
@@ -38,17 +40,17 @@ class Router
     {
         self::$httpMethod = self::METHOD_GET_AND_POST;
 
+        echo $_SERVER['REQUEST_METHOD'] . ' |/ ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
-    public static function execute(string $uri, string $method)
+    private static function execute(string $uri, string $method)
     {
         $uri = '/' . trim($uri, '/');
-        $url = ! empty($_GET['uri']) ? '/' . $_GET['uri'] : '/';
+        $url = !empty($_GET['uri']) ? '/' . $_GET['uri'] : '/';
 
         if (preg_match("#^$uri$#", $url, $params)) {
             if (self::isRedirection($method)) {
-                echo "Redirect";
                 header(
                     sprintf('Location: %s/%s', $_ENV['SITE_URL'], $method)
                 );
@@ -68,6 +70,7 @@ class Router
 
                         // Make sure the requested action has "public" visibility
                         if ($action->isPublic()) {
+
                             // Now, we perform the controller's action
                             return $action->invokeArgs(new $className, self::getActionParameters($params));
                         }
@@ -96,6 +99,7 @@ class Router
             return $_SERVER['REQUEST_METHOD'] === self::METHOD_GET || $_SERVER['REQUEST_METHOD'] === self::METHOD_POST;
         }
 
+        echo $_SERVER['REQUEST_METHOD'] . ' ||| ' . self::$httpMethod;
         return $_SERVER['REQUEST_METHOD'] === self::$httpMethod;
     }
 
@@ -104,6 +108,7 @@ class Router
         foreach ($params as $key => $value) {
             $params[$key] = str_replace('/', '', $params);
         }
+
         return $params;
     }
 }

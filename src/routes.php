@@ -14,9 +14,9 @@ $userSession = new UserSessionService(new Session());
 try {
     Router::get('/', 'Homepage@index');
     Router::get('/about', 'Homepage@about');
-    Router::get('/contact', '/?uri=about'); // Redirect to /about page
+    Router::get('/contact', '/about'); // Redirect to /about page
 
-    if (! $userSession->isLoggedIn()) {
+    if (!$userSession->isLoggedIn()) {
         Router::getAndPost('/signup', 'Account@signUp');
         Router::getAndPost('/signin', 'Account@signIn');
     }

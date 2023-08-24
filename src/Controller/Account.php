@@ -10,8 +10,6 @@ use BuyMeACoffee\Kernel\Session;
 use BuyMeACoffee\Service\User as UserService;
 use BuyMeACoffee\Service\UserSession as UserSessionService;
 
-use BuyMeACoffee\Service\UserSession;
-
 class Account
     // all clear
 {
@@ -31,9 +29,10 @@ class Account
     public function signUp(): void
     {
         $viewVariables = [];
-
+        
         if (Input::postExists('signup_submit')) {
             // Treat the values we recieve
+            
             $fullName = Input::post('fullname');
             $email = Input::post('email');
             $password = Input::post('password');
@@ -106,6 +105,6 @@ class Account
         $this->userSessionService->logout();
 
         // Redirect the user to the index page
-        redirect();
+        redirect('/?uri=home');
     }
 }

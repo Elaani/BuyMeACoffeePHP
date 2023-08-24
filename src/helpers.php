@@ -1,8 +1,9 @@
 <?php
 
 declare(strict_types=1);
+//all clear
 
-function site_url(string $value = '')
+function site_url(string $value = ''): string
 {
     if (! empty($value)) {
         return $_ENV['SITE_URL'] . $value;
@@ -11,7 +12,7 @@ function site_url(string $value = '')
     return $_ENV['SITE_URL'];
 }
 
-function site_name()
+function site_name(): string
 {
     return $_ENV['SITE_NAME'];
 }
