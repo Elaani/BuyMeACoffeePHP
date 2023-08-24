@@ -33,7 +33,7 @@ class Account
         if (Input::postExists('signup_submit')) {
             // Treat the values we recieve
             
-            $fullName = Input::post('fullname');
+            $fullName = Input::post('name');
             $email = Input::post('email');
             $password = Input::post('password');
 
@@ -105,6 +105,6 @@ class Account
         $this->userSessionService->logout();
 
         // Redirect the user to the index page
-        redirect('/?uri=home');
+        redirect();
     }
 }

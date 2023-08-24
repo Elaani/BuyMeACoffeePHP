@@ -12,27 +12,24 @@ class User
    private const TABLE_NAME = 'users';
 
    public function insert(array $userDetails): string|bool
-   //---------------v
    {
-      $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (fullname, email, password) VALUES(:fullname, :email, :password)';
+       $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (fullname, email, password) VALUES(:fullname, :email, :password)';
 
-      if (Database::query($sql, $userDetails)) {
-         return Database::lastInsertId();
-      }
-      ;
+       if (Database::query($sql, $userDetails)) {
+           return Database::lastInsertId();
+       }
 
-      return false;
-
+       return false;
    }
 
-   public function doesAccountExist(string $email): bool
+   public function doesAccountEmailExist(string $email): bool
    {
-      $sql = 'SELECT email FROM ' . self::TABLE_NAME . ' WHERE email = :email LIMIT 1';
+       $sql = 'SELECT email FROM ' . self::TABLE_NAME . ' WHERE email = :email LIMIT 1';
 
-      Database::query($sql, ['email' => $email]);
+       Database::query($sql, ['email' => $email]);
 
-      // Check if the query returned an email address
-      return Database::rowCount() >= 1;
+       // We check if the query returned one or one email addresses
+       return Database::rowCount() >= 1;
    }
 
    public function getUserDetails(string $email)
@@ -43,4 +40,3 @@ class User
       return Database::fetch();
    }
 }
-//--------------------^

@@ -6,12 +6,12 @@ namespace BuyMeACoffee\Kernel;
 
 class Session
 {
-    public function __contruct()
+    public function __construct()
     {
         $this->initialize();
     }
 
-    public static function set(string $key, $value): void
+    public function set(string $key, $value): void
     {
         $_SESSION[$key] = $value;
     }

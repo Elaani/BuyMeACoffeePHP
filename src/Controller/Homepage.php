@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace BuyMeACoffee\Controller;
 
 use BuyMeACoffee\Kernel\Session;
-use BuyMeACoffee\Service\UserSession as UserSessionService;
 use BuyMeACoffee\Kernel\PhpTemplate\View;
+use BuyMeACoffee\Service\UserSession as UserSessionService;
 
 class Homepage
 {
@@ -34,7 +34,12 @@ class Homepage
 
     public function about(): void
     {
-        $viewVariables = ['siteName' => $_ENV['SITE_NAME'], 'contactEmail' => $_ENV['ADMIN_EMAIL']];
-        View::render('home/about', 'Homepage', $viewVariables);
+        $viewVariables = [
+            'isLoggedIn' => $this->isLoggedIn,
+            'siteName' => $_ENV['SITE_NAME'], 
+            'contactEmail' => $_ENV['ADMIN_EMAIL']
+        ];
+
+        View::render('home/about', 'About', $viewVariables);
     }
 }

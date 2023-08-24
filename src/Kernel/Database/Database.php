@@ -49,12 +49,12 @@ class Database
 
     public static function fetch()
     {
-        return static::$statement->fetch(PDO::FETCH_ASSOC);
+        return static::$statement->fetch(PDO::FETCH_OBJ);
     }
 
     public static function fetchAll(): ?array
     {
-        return static::$statement->fetchAll() ?? null;
+        return static::$statement->fetchAll(PDO::FETCH_OBJ) ?? null;
     }
 
     public static function lastInsertId(): string|bool

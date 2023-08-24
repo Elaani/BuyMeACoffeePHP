@@ -4,8 +4,8 @@ namespace BuyMeACoffee\Kernel\PhpTemplate;
 
 final class View
 {
-    public const SUCCESS_MESSAGE_KEY = "success_messsage";
-    public const ERROR_MESSAGE_KEY = "error_message";
+    public const SUCCESS_MESSAGE_KEY = 'success_messsage';
+    public const ERROR_MESSAGE_KEY = 'error_message';
     private const MESSAGES = [
         "FILENAME_NOT_FOUND" => '"%s" does not exist.'
     ];

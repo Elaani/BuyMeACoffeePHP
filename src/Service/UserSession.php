@@ -21,13 +21,13 @@ class UserSession
         return $this->session->doesExist(self::USER_ID_SESSION_NAME);
     }
 
-    public function setAuthentication(string|int $userId, string $email, string $fullname)
+    public function setAuthentication(string|int $userId, string $email, string $fullName)
     {
         $this->session->sets(
             [
                 self::USER_ID_SESSION_NAME => $userId,
                 'email' => $email,
-                'fullName' => $fullname,
+                'fullName' => $fullName,
             ]
         );
     }
