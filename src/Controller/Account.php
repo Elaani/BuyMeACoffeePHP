@@ -13,23 +13,27 @@ use BuyMeACoffee\Service\UserSession as UserSessionService;
 use BuyMeACoffee\Service\UserSession;
 
 class Account
+    // all clear
 {
     private UserService $userService;
     private UserSessionService $userSessionService;
+
+    private bool $isLoggedIn;
 
     public function __construct()
     {
         $this->userService = new UserService();
         $this->userSessionService = new UserSessionService(new Session());
+        $this->isLoggedIn = $this->userSessionService->isLoggedIn();
+
     }
 
     public function signUp(): void
     {
         $viewVariables = [];
 
-        if (Input::post('signup_submit')) {
+        if (Input::postExists('signup_submit')) {
             // Treat the values we recieve
-
             $fullName = Input::post('fullname');
             $email = Input::post('email');
             $password = Input::post('password');
@@ -50,11 +54,7 @@ class Account
 
                         // Register the user
                         if ($userId = $this->userService->create($user)) {
-                            $this->userSessionService->setAuthentication([
-                                UserSession::USER_ID_SESSION_NAME => $userId,
-                                'email' => $email,
-                                'fullName' => $fullName
-                            ]);
+                            $this->userSessionService->setAuthentication($userId, $email, $fullName);
 
                             redirect();
                         } else {
@@ -74,14 +74,34 @@ class Account
 
     public function signIn(): void
     {
-        View::render('account/signin', 'Sign In');
-    }
-    public function edit(): void
-    {
-        View::render('account/edit', 'Edit Account');
+        $viewVariables = [];
+
+        if (Input::postExists('signin_submit')) {
+            $email = Input::post('email');
+            $password = Input::post('password');
+
+            $userDetails = $this->userService->getUserDetails($email);
+            $isLoginValid = ! empty($userDetails->password) && $this->userService->verifyPassword($password, $userDetails->password);
+
+            if ($isLoginValid) {
+                $this->userSessionService->setAuthentication($userDetails->userId, $userDetails->email, $userDetails->fullname);
+
+                redirect();
+            } else {
+                $viewVariables[View::ERROR_MESSAGE_KEY] = 'Incorrect login.';
+            }
+
+        }
+
+        View::render('account/signin', 'Sign In', $viewVariables);
     }
 
-    public function logOut(): void
+    public function edit(): void
+    {
+        View::render('account/edit', 'Edit Account', ['isLoggedIn' => $this->isLoggedIn]);
+    }
+
+    public function logout(): void
     {
         $this->userSessionService->logout();
 

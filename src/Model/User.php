@@ -12,6 +12,7 @@ class User
    private const TABLE_NAME = 'users';
 
    public function insert(array $userDetails): string|bool
+   //---------------v
    {
       $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (fullname, email, password) VALUES(:fullname, :email, :password)';
 
@@ -34,8 +35,12 @@ class User
       return Database::rowCount() >= 1;
    }
 
-   public function login(string $email, string $password): bool
+   public function getUserDetails(string $email)
    {
-      return true;
+      $sql = 'SELECT * FROM ' . self::TABLE_NAME . ' WHERE email = :email LIMIT 1';
+      Database::query($sql, ['email' => $email]);
+
+      return Database::fetch();
    }
 }
+//--------------------^

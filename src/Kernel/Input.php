@@ -1,18 +1,28 @@
 <?php
 
 declare(strict_types=1);
-
+//all clear
 namespace BuyMeACoffee\Kernel;
 
 final class Input
 {
-    public static function get(string $key)
+    public static function get(string $key): null|string|array
     {
-        return $_GET[$key] ?? false;
+        return $_GET[$key] ?? '';
     }
 
-    public static function post(string $key)
+    public static function post(string $key): null|string|array
     {
-        return $_POST[$key] ?? false;
+        return $_POST[$key] ?? '';
+    }
+
+    public static function postExists(string $key): bool
+    {
+        return ! empty($_POST[$key]);
+    }
+
+    public static function getExists(string $key): bool
+    {
+        return ! empty($_GET[$key]);
     }
 }

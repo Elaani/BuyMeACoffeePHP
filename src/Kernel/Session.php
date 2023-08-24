@@ -18,12 +18,12 @@ class Session
 
     public function sets(array $data): void
     {
+        // ----------- v
         foreach ($data as $key => $value) {
             $this->set($key, $value);
         }
     }
 
-    // Allows the creation of multiple sessions
     public function get(string $key)
     {
         return $_SESSION[$key] ?? false;
@@ -49,6 +49,7 @@ class Session
     }
 
     private function initialize()
+    //------------------^
     {
         if (! $this->isActivated()) {
             session_start();

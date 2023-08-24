@@ -6,6 +6,7 @@ use BuyMeACoffee\Kernel\Session;
 
 class UserSession
 {
+    // all clear
     public const USER_ID_SESSION_NAME = 'userId';
 
     private Session $session;
@@ -20,9 +21,15 @@ class UserSession
         return $this->session->doesExist(self::USER_ID_SESSION_NAME);
     }
 
-    public function setAuthentication(array $userDetails)
+    public function setAuthentication(string|int $userId, string $email, string $fullname)
     {
-        $this->session->sets($userDetails);
+        $this->session->sets(
+            [
+                self::USER_ID_SESSION_NAME => $userId,
+                'email' => $email,
+                'fullName' => $fullname,
+            ]
+        );
     }
 
     public function logout()

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Service;
 
 use BuyMeACoffee\Model\User as UserModel;
 
+// all clear
 class User
 {
     private const MINIMUM_PASSWORD = 5;
@@ -49,5 +52,10 @@ class User
     public function verifyPassword(string $clearedPassword, string $hashedPassword): bool
     {
         return password_verify($clearedPassword, $hashedPassword);
+    }
+
+    public function getUserDetails(string $email)
+    {
+        return $this->userModel->getUserDetails($email);
     }
 }

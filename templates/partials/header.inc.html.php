@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -13,3 +13,8 @@
 <body>
 
     <?php include 'messages.inc.html.php' ?>
+
+    <!-- all clear -->
+    <?php if (! empty($isLoggedIn) && $isLoggedIn === true) : ?>
+        <?php include 'user-menu.inc.html.php' ?>
+    <?php endif ?>

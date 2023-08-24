@@ -19,6 +19,7 @@ class Database
                 $dbDetails['db_user'],
                 $dbDetails['db_password']
             );
+            //-----------------v
         } catch (PDOException $except) {
             echo $except->getMessage();
             exit('An unexpected database error has occurred.');
@@ -35,7 +36,7 @@ class Database
         }
 
         if ($execute) {
-            static::$statement->execute();
+            return static::$statement->execute();
         }
 
         return true;
@@ -48,7 +49,7 @@ class Database
 
     public static function fetch()
     {
-        return static::$statement->fetch();
+        return static::$statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public static function fetchAll(): ?array

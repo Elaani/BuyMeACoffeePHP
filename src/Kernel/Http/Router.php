@@ -54,6 +54,7 @@ class Router
                 );
 
             } elseif (self::isHttpMethodValid()) {
+                // ----------------v
                 $split = explode(self::CONTROLLER_SEPARATOR, $method);
                 $className = self::CONTROLLER_NAMESPACE . $split[0];
                 $method = $split[1];
@@ -74,6 +75,7 @@ class Router
                 } catch (ReflectionException $err) {
                     echo $err->getMessage();
                 }
+                //-------------^
             } else {
                 throw new InvalidArgumentException(
                     sprintf('Invalid "%s" HTTP Request', $_SERVER['REQUEST_METHOD'])
