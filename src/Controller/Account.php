@@ -11,7 +11,6 @@ use BuyMeACoffee\Service\User as UserService;
 use BuyMeACoffee\Service\UserSession as UserSessionService;
 
 class Account
-    // all clear
 {
     private UserService $userService;
     private UserSessionService $userSessionService;
@@ -23,16 +22,15 @@ class Account
         $this->userService = new UserService();
         $this->userSessionService = new UserSessionService(new Session());
         $this->isLoggedIn = $this->userSessionService->isLoggedIn();
-
     }
 
     public function signUp(): void
     {
         $viewVariables = [];
-        
+
         if (Input::postExists('signup_submit')) {
             // Treat the values we recieve
-            
+
             $fullName = Input::post('name');
             $email = Input::post('email');
             $password = Input::post('password');
@@ -42,7 +40,7 @@ class Account
                     $this->userService->isEmailValid($email) &&
                     $this->userService->isPasswordValid($password)
                 ) {
-                    if ($this->userService->doesAccountExist($email)) {
+                    if ($this->userService->doesAccountEmailExist($email)) {
                         $viewVariables[View::ERROR_MESSAGE_KEY] = 'An account with the same email already exists.';
                     } else {
                         $user = [
@@ -80,6 +78,7 @@ class Account
             $password = Input::post('password');
 
             $userDetails = $this->userService->getUserDetails($email);
+            var_dump($userDetails);
             $isLoginValid = ! empty($userDetails->password) && $this->userService->verifyPassword($password, $userDetails->password);
 
             if ($isLoginValid) {

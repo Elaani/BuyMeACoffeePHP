@@ -6,7 +6,6 @@ namespace BuyMeACoffee\Service;
 
 use BuyMeACoffee\Model\User as UserModel;
 
-// all clear
 class User
 {
     private const MINIMUM_PASSWORD = 5;
@@ -27,9 +26,9 @@ class User
         return $this->userModel->insert($userDetails);
     }
 
-    public function doesAccountExist(string $email): bool
+    public function doesAccountEmailExist(string $email): bool
     {
-        return $this->userModel->doesAccountExist($email);
+        return $this->userModel->doesAccountEmailExist($email);
     }
 
     public function isEmailValid(string $email): bool

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Service;
 
 use BuyMeACoffee\Kernel\Session;
 
 class UserSession
 {
-    // all clear
+
     public const USER_ID_SESSION_NAME = 'userId';
 
     private Session $session;

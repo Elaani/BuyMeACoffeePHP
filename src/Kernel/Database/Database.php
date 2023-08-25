@@ -19,7 +19,7 @@ class Database
                 $dbDetails['db_user'],
                 $dbDetails['db_password']
             );
-            //-----------------v
+
         } catch (PDOException $except) {
             echo $except->getMessage();
             exit('An unexpected database error has occurred.');

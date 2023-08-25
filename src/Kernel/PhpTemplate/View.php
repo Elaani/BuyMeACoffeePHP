@@ -9,7 +9,6 @@ final class View
     private const MESSAGES = [
         "FILENAME_NOT_FOUND" => '"%s" does not exist.'
     ];
-    //-------------------v
     private const PATH = __DIR__ . '/../../../templates/';
     private const FILE_EXTENSION = '.html.php';
 
@@ -22,6 +21,7 @@ final class View
         if (self::isViewExists($view)) {
             include_once self::PATH . $view . self::FILE_EXTENSION;
         } else {
+            echo "view not found";
             throw new ViewNotFound(sprintf(self::MESSAGES['FILENAME_NOT_FOUND'], $view . self::FILE_EXTENSION));
         }
 

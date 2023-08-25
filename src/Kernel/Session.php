@@ -18,7 +18,6 @@ class Session
 
     public function sets(array $data): void
     {
-        // ----------- v
         foreach ($data as $key => $value) {
             $this->set($key, $value);
         }
@@ -49,7 +48,6 @@ class Session
     }
 
     private function initialize()
-    //------------------^
     {
         if (! $this->isActivated()) {
             session_start();

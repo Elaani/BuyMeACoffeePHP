@@ -24,7 +24,6 @@ class Router
     {
         self::$httpMethod = self::METHOD_GET;
 
-        echo $_SERVER['REQUEST_METHOD'] . ' 2| ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
@@ -32,7 +31,6 @@ class Router
     {
         self::$httpMethod = self::METHOD_POST;
 
-        echo $_SERVER['REQUEST_METHOD'] . ' |2 ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
@@ -40,14 +38,13 @@ class Router
     {
         self::$httpMethod = self::METHOD_GET_AND_POST;
 
-        echo $_SERVER['REQUEST_METHOD'] . ' |/ ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
     private static function execute(string $uri, string $method)
     {
         $uri = '/' . trim($uri, '/');
-        $url = !empty($_GET['uri']) ? '/' . $_GET['uri'] : '/';
+        $url = ! empty($_GET['uri']) ? '/' . $_GET['uri'] : '/';
 
         if (preg_match("#^$uri$#", $url, $params)) {
             if (self::isRedirection($method)) {
@@ -56,7 +53,7 @@ class Router
                 );
 
             } elseif (self::isHttpMethodValid()) {
-                // ----------------v
+
                 $split = explode(self::CONTROLLER_SEPARATOR, $method);
                 $className = self::CONTROLLER_NAMESPACE . $split[0];
                 $method = $split[1];
@@ -78,7 +75,7 @@ class Router
                 } catch (ReflectionException $err) {
                     echo $err->getMessage();
                 }
-                //-------------^
+
             } else {
                 throw new InvalidArgumentException(
                     sprintf('Invalid "%s" HTTP Request', $_SERVER['REQUEST_METHOD'])
@@ -99,7 +96,6 @@ class Router
             return $_SERVER['REQUEST_METHOD'] === self::METHOD_GET || $_SERVER['REQUEST_METHOD'] === self::METHOD_POST;
         }
 
-        echo $_SERVER['REQUEST_METHOD'] . ' ||| ' . self::$httpMethod;
         return $_SERVER['REQUEST_METHOD'] === self::$httpMethod;
     }
 

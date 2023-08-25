@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+// declare(strict_types=1);
 
 namespace BuyMeACoffee\Controller;
 
@@ -10,7 +10,6 @@ use BuyMeACoffee\Service\UserSession as UserSessionService;
 
 class Homepage
 {
-    //all clear
     private UserSessionService $userSessionService;
     private $isLoggedIn;
 
@@ -36,7 +35,7 @@ class Homepage
     {
         $viewVariables = [
             'isLoggedIn' => $this->isLoggedIn,
-            'siteName' => $_ENV['SITE_NAME'], 
+            'siteName' => $_ENV['SITE_NAME'],
             'contactEmail' => $_ENV['ADMIN_EMAIL']
         ];
 

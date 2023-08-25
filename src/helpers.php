@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-//all clear
 
 function site_url(string $value = ''): string
 {
