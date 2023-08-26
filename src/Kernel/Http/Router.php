@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BuyMeACoffee\Kernel\Http;
 
+use BuyMeACoffee\Controller\Base;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -18,13 +19,14 @@ class Router
     public const METHOD_POST = 'POST';
     private const METHOD_GET_AND_POST = 'GET_POST';
 
+    private static bool $isPageFound = false;
+
     private static ?string $httpMethod;
 
     public static function get(string $uri, string $classMethod = '')
     {
         self::$httpMethod = self::METHOD_GET;
 
-        echo $_SERVER['REQUEST_METHOD'] . ' 2| ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
@@ -32,7 +34,6 @@ class Router
     {
         self::$httpMethod = self::METHOD_POST;
 
-        echo $_SERVER['REQUEST_METHOD'] . ' |2 ' . self::$httpMethod;
         self::execute($uri, $classMethod);
     }
 
@@ -40,23 +41,25 @@ class Router
     {
         self::$httpMethod = self::METHOD_GET_AND_POST;
 
-        echo $_SERVER['REQUEST_METHOD'] . ' |/ ' . self::$httpMethod;
         self::execute($uri, $classMethod);
+    }
+
+    public static function doesContain(string $uriSegment): bool
+    {
+        return ! empty($_GET['uri']) && str_contains($_GET['uri'], $uriSegment);
     }
 
     private static function execute(string $uri, string $method)
     {
         $uri = '/' . trim($uri, '/');
-        $url = !empty($_GET['uri']) ? '/' . $_GET['uri'] : '/';
+        $url = ! empty($_GET['uri']) ? '/' . $_GET['uri'] : '/';
 
         if (preg_match("#^$uri$#", $url, $params)) {
             if (self::isRedirection($method)) {
                 header(
                     sprintf('Location: %s/%s', $_ENV['SITE_URL'], $method)
                 );
-
             } elseif (self::isHttpMethodValid()) {
-                // ----------------v
                 $split = explode(self::CONTROLLER_SEPARATOR, $method);
                 $className = self::CONTROLLER_NAMESPACE . $split[0];
                 $method = $split[1];
@@ -70,21 +73,30 @@ class Router
 
                         // Make sure the requested action has "public" visibility
                         if ($action->isPublic()) {
+                            self::$isPageFound = true;
 
                             // Now, we perform the controller's action
                             return $action->invokeArgs(new $className, self::getActionParameters($params));
                         }
                     }
                 } catch (ReflectionException $err) {
-                    echo $err->getMessage();
+                    if (DEBUG_MODE) {
+                        echo $err->getMessage();
+                        exit;
+                    }
                 }
-                //-------------^
             } else {
                 throw new InvalidArgumentException(
                     sprintf('Invalid "%s" HTTP Request', $_SERVER['REQUEST_METHOD'])
                 );
             }
+        }
+    }
 
+    public static function end(): void
+    {
+        if (! self::$isPageFound) {
+            (new Base)->pageNotFound();
         }
     }
 
@@ -99,7 +111,6 @@ class Router
             return $_SERVER['REQUEST_METHOD'] === self::METHOD_GET || $_SERVER['REQUEST_METHOD'] === self::METHOD_POST;
         }
 
-        echo $_SERVER['REQUEST_METHOD'] . ' ||| ' . self::$httpMethod;
         return $_SERVER['REQUEST_METHOD'] === self::$httpMethod;
     }
 

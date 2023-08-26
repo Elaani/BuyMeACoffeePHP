@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Kernel\Database;
 
 use PDO;
@@ -19,14 +21,15 @@ class Database
                 $dbDetails['db_user'],
                 $dbDetails['db_password']
             );
-            //-----------------v
         } catch (PDOException $except) {
             echo $except->getMessage();
             exit('An unexpected database error has occurred.');
         }
     }
 
-    // Prepare a query and execute if applicable
+    /**
+     * Prepare a query and execute if applicable.
+     */
     public static function query(string $sql, array $binds, bool $execute = true): bool
     {
         static::$statement = static::$pdo->prepare($sql);

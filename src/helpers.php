@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-//all clear
 
 function site_url(string $value = ''): string
 {
@@ -19,16 +18,28 @@ function site_name(): string
 
 function redirect(string $value = null, $permanent = true): void
 {
-    if ($permanent) { // Good for Search Engine Optimization
+    if ($permanent) {
         header('HTTP/1.1 301 Moved Permanently');
     }
 
     if (! empty($value)) {
+        // Use ternary conditional operator
         $url = str_contains($value, 'http') ? $value : $_ENV['SITE_URL'] . $value;
     } else {
         $url = $_ENV['SITE_URL'];
     }
 
     header('Location: ' . $url);
+
+    /**
+     * Here (below), we exit the script as after a redirection (HTTP Location header), 
+     * it's pointless to continue the script running as the redirection will happen no matter what. 
+     * That way, we don't waste time continuing running code after sending the "HTTP Location header"
+     */
     exit;
+}
+
+function escape(string $value): string
+{
+    return htmlspecialchars($value, ENT_QUOTES);
 }

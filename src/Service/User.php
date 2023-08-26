@@ -6,12 +6,8 @@ namespace BuyMeACoffee\Service;
 
 use BuyMeACoffee\Model\User as UserModel;
 
-// all clear
 class User
 {
-    private const MINIMUM_PASSWORD = 5;
-    private const MAXIMUM_EMAIL_LENGTH = 100;
-
     private const PASSWORD_COST_FACTOR = 12;
     private const PASSWORD_ALGORITHM = PASSWORD_BCRYPT;
 
@@ -27,21 +23,24 @@ class User
         return $this->userModel->insert($userDetails);
     }
 
-    public function doesAccountExist(string $email): bool
+    public function updateEmail(string $userId, string $email): bool
     {
-        return $this->userModel->doesAccountExist($email);
+        return $this->userModel->updateEmail($userId, $email);
     }
 
-    public function isEmailValid(string $email): bool
+    public function updateName(string $userId, string $name): bool
     {
-        return
-            strlen($email) <= self::MAXIMUM_EMAIL_LENGTH &&
-            filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+        return $this->userModel->updateName($userId, $name);
     }
 
-    public function isPasswordValid(string $password): bool
+    public function updatePassword(string $userId, string $hashedPassword): bool
     {
-        return strlen($password) > self::MINIMUM_PASSWORD;
+        return $this->userModel->updatePassword($userId, $hashedPassword);
+    }
+
+    public function doesAccountEmailExist(string $email): bool
+    {
+        return $this->userModel->doesAccountEmailExist($email);
     }
 
     public function hashPassword(string $password): string
@@ -54,8 +53,20 @@ class User
         return password_verify($clearedPassword, $hashedPassword);
     }
 
-    public function getUserDetails(string $email)
+    public function getDetailsFromEmail(string $email)
     {
         return $this->userModel->getUserDetails($email);
+    }
+
+    public function getDetailsFromId(string $userIdl)
+    {
+        return $this->userModel->getUserDetails($userIdl);
+    }
+
+    public function getHashedPassword(string $userId): string
+    {
+        $userDetails = $this->userModel->getUserDetails($userId);
+
+        return $userDetails->password ?? '';
     }
 }

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Service;
 
 use BuyMeACoffee\Kernel\Session;
 
 class UserSession
 {
-    // all clear
     public const USER_ID_SESSION_NAME = 'userId';
 
     private Session $session;
@@ -40,5 +41,10 @@ class UserSession
     public function getName(): string
     {
         return $this->session->get('fullName');
+    }
+
+    public function getId(): string
+    {
+        return $this->session->get(self::USER_ID_SESSION_NAME);
     }
 }

@@ -1,35 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Kernel\PhpTemplate;
+
+use Symfony\Component\Templating\Helper\SlotsHelper;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Component\Templating\TemplateNameParser;
+
 
 final class View
 {
-    public const SUCCESS_MESSAGE_KEY = 'success_messsage';
+    public const SUCCESS_MESSAGE_KEY = 'success_message';
     public const ERROR_MESSAGE_KEY = 'error_message';
-    private const MESSAGES = [
-        "FILENAME_NOT_FOUND" => '"%s" does not exist.'
-    ];
-    //-------------------v
-    private const PATH = __DIR__ . '/../../../templates/';
+
+    private const PATH = __DIR__ . '/../../../templates/%name%';
     private const FILE_EXTENSION = '.html.php';
 
-    public static function render(string $view, string $title, array $context = [])
+    public static function render(string $viewFile, string $title, array $context = []): string
     {
-        extract($context);
+        $context['title'] = $title;
 
-        require self::PATH . 'partials/header.inc.html.php';
+        $filesystemLoader = new FilesystemLoader(self::PATH);
 
-        if (self::isViewExists($view)) {
-            include_once self::PATH . $view . self::FILE_EXTENSION;
-        } else {
-            throw new ViewNotFound(sprintf(self::MESSAGES['FILENAME_NOT_FOUND'], $view . self::FILE_EXTENSION));
-        }
+        $templating = new PhpEngine(new TemplateNameParser(), $filesystemLoader);
+        $templating->set(new SlotsHelper());
 
-        require self::PATH . 'partials/footer.inc.html.php';
+        $viewRender = $templating->render('_partials/header.inc.html.php', $context);
+        $viewRender .= $templating->render($viewFile . self::FILE_EXTENSION, $context);
+        $viewRender .= $templating->render('_partials/footer.inc.html.php');
+
+        return $viewRender;
     }
 
-    private static function isViewExists(string $filename): bool
+    public static function output(string $viewFile, string $title, array $context = []): void
     {
-        return is_file(self::PATH . $filename . self::FILE_EXTENSION);
+        echo self::render($viewFile, $title, $context);
     }
 }

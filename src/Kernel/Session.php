@@ -1,14 +1,16 @@
 <?php
 
-// declare(strict_types=1);
+declare(strict_types=1);
 
 namespace BuyMeACoffee\Kernel;
 
 class Session
 {
-    public function __construct()
+    public function __construct(bool $autoSessionStart = true)
     {
-        $this->initialize();
+        if ($autoSessionStart) {
+            $this->initialize();
+        }
     }
 
     public function set(string $key, $value): void
@@ -16,9 +18,11 @@ class Session
         $_SESSION[$key] = $value;
     }
 
+    /**
+     * Allows creating more than one session.
+     */
     public function sets(array $data): void
     {
-        // ----------- v
         foreach ($data as $key => $value) {
             $this->set($key, $value);
         }
@@ -49,7 +53,6 @@ class Session
     }
 
     private function initialize()
-    //------------------^
     {
         if (! $this->isActivated()) {
             session_start();

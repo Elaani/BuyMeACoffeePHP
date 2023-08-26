@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BuyMeACoffee\Kernel;
 
 use BuyMeACoffee\Kernel\Database\Database;
@@ -12,6 +14,7 @@ final class Bootstrap
         // First, load the environment variables
         $dotent = new Dotenv();
         $this->loadEnvironmentVariables($dotent);
+        $this->initializeDebuggingMode();
 
         // Then, initialize the database connection (we need the ENV vars to be loaded before)
         $this->initializeDatabase();
@@ -22,6 +25,19 @@ final class Bootstrap
         require dirname(__DIR__, 1) . '/routes.php';
     }
 
+    private function initializeDebuggingMode(): void
+    {
+        define('DEBUG_MODE', filter_var($_ENV['DEBUG_MODE'], FILTER_VALIDATE_BOOL));
+
+        if (DEBUG_MODE) {
+            error_reporting(E_ALL);
+            ini_set('display_errors', 'On');
+        } else {
+            error_reporting(0);
+            ini_set('display_errors', 'Off');
+        }
+    }
+
     private function initializeDatabase(): void
     {
         $dbDetails = [
@@ -30,6 +46,7 @@ final class Bootstrap
             'db_user' => $_ENV['DB_USER'],
             'db_password' => $_ENV['DB_PASSWORD']
         ];
+
         Database::connect($dbDetails);
     }
 
