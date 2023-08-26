@@ -1,6 +1,6 @@
 <div class="center">
-    <h3 class="underline blue-text">
-        Sign Up for Free Today 🚀
+    <h3 class="blue-text">
+        Sign up for free today! 🚀
     </h3>
 
     <div class="row">
