@@ -4,7 +4,7 @@
     <h2 class="center blue-text">
         <?php if (! empty($name)) : ?>
             <p>
-                Hey <strong>
+                Hey, <strong>
                     <?= $view->escape($name) ?>!
                 </strong>
             </p>
