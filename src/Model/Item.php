@@ -47,7 +47,7 @@ class Item
 
     public function get(string $value)
     {
-        $sql = 'SELECT * FROM ' . self::TABLE_NAME . ' AS i INNER JOIN ' . Payment::TABLE_NAME . ' AS p INNER JOIN ' . User::TABLE_NAME . ' AS u USING(userId) WHERE idName = :value OR i.userId = :value LIMIT 1';
+        $sql = 'SELECT * FROM ' . self::TABLE_NAME . ' AS i INNER JOIN ' . Payment::TABLE_NAME . ' AS p INNER JOIN ' . User::TABLE_NAME . ' AS u ON u.userId WHERE idName = :value OR i.userId = :value LIMIT 1';
 
         Database::query($sql, ['value' => $value]);
 
