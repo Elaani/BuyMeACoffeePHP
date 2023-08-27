@@ -162,7 +162,8 @@ class Account
             $confirmPassword = Input::post('confirm_password');
 
             $userId = $this->userSessionService->getId();
-            if ($currentPassword === $this->userService->getHashedPassword($userId)) {
+
+            if ($this->userService->verifyPassword($currentPassword, $this->userService->getHashedPassword($userId))) {
                 // If current user's password is valid, let's proceed
                 if ($newPassword === $confirmPassword) {
                     $userId = $this->userSessionService->getId();
