@@ -60,7 +60,7 @@ class Payment extends Base
                             'currency' => $currency,
                         ]
                     );
-                    $successMessage = sprintf('Payment successfully added. <br> You can now <a href="%s">add an item</a> 🥳', site_url('/item'));
+                    $successMessage = sprintf('Payment successfully added. <br> You can now <a href="%s">add an item</a> 🥳', site_url('/?uri=item'));
                     $viewVariables[View::SUCCESS_MESSAGE_KEY] = $successMessage;
                 }
             } else {
@@ -93,7 +93,7 @@ class Payment extends Base
 
         if (! $this->paymentService->doesPaymentExist($userId)) {
             $viewVariables['isFieldDisabled'] = true;
-            $message = sprintf('⚠️ You need to set <a href="%s">your payment method</a> first.', site_url('/payment'));
+            $message = sprintf('⚠️ You need to set <a href="%s">your payment method</a> first.', site_url('/?uri=payment'));
             $viewVariables[View::ERROR_MESSAGE_KEY] = $message;
         }
 
