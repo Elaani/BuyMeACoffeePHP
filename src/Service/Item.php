@@ -47,6 +47,6 @@ class Item
 
     public function getUserItemUrl(string $itemIdName): string
     {
-        return site_url('/p/' . $itemIdName);
+        return site_url('/index.php?uri=showitem&id=' . $itemIdName);
     }
 }
